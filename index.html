@@ -177,40 +177,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       </div>
     </div>
 
-    <!-- MUSCLE RELEASE CARD -->
-    <div class="service-card" id="card-muscle">
-      <div class="service-card-title">Muscle Release & Recovery</div>
-      <p>A focused session dedicated entirely to soft tissue work, myofascial release, and manual therapy with Coach Ziad — at your home. Designed to eliminate restrictions, reduce chronic tension, and restore movement quality at the root, not mask it.</p>
-      <div class="duration-cards">
-        <div class="duration-card">
-          <div class="duration-num">45</div>
-          <div><div class="duration-text-title">45–60 min — Targeted Release</div><div class="duration-text-desc">Focused work on a specific area — shoulder, lower back, hips, legs, or wherever you need it most.</div></div>
-        </div>
-        <div class="duration-card">
-          <div class="duration-num">90</div>
-          <div><div class="duration-text-title">90–120 min — Full Body Release</div><div class="duration-text-desc">A complete session addressing the full kinetic chain. Ideal for chronic tension, post-event recovery, or a full reset.</div></div>
-        </div>
       </div>
-      <p class="tagline" style="margin-top:14px;">Please ensure a firm surface is available — a massage table, firm mat, or a bed with a solid base.</p>
-      <div class="field" style="margin-top:16px;">
-        <label class="lbl">Preferred session duration</label>
-        <div class="pills" id="p-muscle-duration"></div>
-      </div>
-      <div class="field" style="margin-top:4px;">
-        <label class="lbl">Surface available at home</label>
-        <div class="pills" id="p-surface"></div>
-      </div>
-      <div class="consent-box">
-        <div class="consent-title">Consent & Disclaimer</div>
-        <p class="consent-text">All Muscle Release & Recovery sessions involve hands-on manual therapy performed by Coach Ziad Elfeky. Sessions are conducted professionally and with full respect for personal boundaries at all times. If you have any concerns, preferences, or areas you'd like to exclude, please state them in the notes section — they will be respected without question.</p>
-        <label class="consent-check">
-          <input type="checkbox" id="muscle-consent">
-          <span>I understand that this session involves hands-on manual therapy by Coach Ziad Elfeky and I consent to this. I am comfortable proceeding and will communicate any boundaries or concerns before the session.</span>
-        </label>
-        <span class="err-msg" id="e-muscle-consent" style="display:block;margin-top:6px;"></span>
-      </div>
-    </div>
-  </div>
 
   <!-- 02 PERSONAL INFO -->
   <div class="sec">
@@ -457,6 +424,9 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       <div class="next-item"><span class="next-num">2.</span>Confirm session date, time, and payment</div>
       <div class="next-item"><span class="next-num">3.</span>We come to you — ready to work</div>
     </div>
+    <div style="background:var(--gold-faint);border:1px solid var(--rule);border-radius:10px;padding:14px 18px;width:100%;margin-top:4px;">
+      <div style="font-size:12px;color:var(--mid);line-height:1.65;"><strong style="color:var(--ink);">Pricing &amp; packages</strong> will be shared with you directly by Coach Ziad once your form is reviewed.</div>
+    </div>
     <button onclick="resetForm()" style="font-size:12px;color:var(--soft);background:none;border:none;cursor:pointer;text-decoration:underline;">Submit another response</button>
   </div>
 </div>
@@ -580,10 +550,8 @@ function initScale() {
 }
 
 function initAll() {
-  initPills('p-service', ['VIP 1-on-1 (by request)','Duo Training (2 people)','Muscle Release & Recovery'], false);
+  initPills('p-service', ['VIP 1-on-1 (by request)','Duo Training (2 people)'], false);
   initPills('p-duo-type', ['Separate goals & individual programs','Train together as one unit'], false);
-  initPills('p-muscle-duration', ['45–60 min (Targeted)','90–120 min (Full Body)'], false);
-  initPills('p-surface', ['Massage table','Firm mat','Bed with solid base','Other'], false);
   initPills('p-parking', ['Yes — easy street parking','Yes — building parking','Limited','No parking available'], false);
   initPills('p-distractions', ['No','Children present','Pets present','Both'], false);
   initPills('p-equipment', ['No equipment','Yoga mat only','Dumbbells','Resistance bands','Pull-up bar','Full home gym'], true);
@@ -611,7 +579,6 @@ function handleServiceChange() {
   var v = getPill('p-service');
   document.getElementById('card-vip').classList.toggle('show', v === 'VIP 1-on-1 (by request)');
   document.getElementById('card-duo').classList.toggle('show', v === 'Duo Training (2 people)');
-  document.getElementById('card-muscle').classList.toggle('show', v === 'Muscle Release & Recovery');
 }
 
 function handleGender() {
@@ -749,12 +716,6 @@ function validate() {
   var pain = document.getElementById('f-pain'); var painErr = document.getElementById('e-pain');
   if (!pain.value.trim()) { pain.classList.add('err'); painErr.textContent = 'Required'; ok = false; }
   else { pain.classList.remove('err'); painErr.textContent = ''; }
-  if (getPill('p-service') === 'Muscle Release & Recovery') {
-    var consent = document.getElementById('muscle-consent');
-    var consentErr = document.getElementById('e-muscle-consent');
-    if (consent && !consent.checked) { consentErr.textContent = 'You must confirm consent to proceed'; ok = false; }
-    else if (consentErr) { consentErr.textContent = ''; }
-  }
   return ok;
 }
 
@@ -763,9 +724,6 @@ function collectData() {
     service_type: getPill('p-service'),
     duo_type: getPill('p-duo-type'),
     duo_second_name: document.getElementById('f-duo-name').value.trim(),
-    muscle_duration: getPill('p-muscle-duration'),
-    muscle_surface: getPill('p-surface'),
-    muscle_consent: document.getElementById('muscle-consent') ? document.getElementById('muscle-consent').checked : false,
     name: document.getElementById('f-name').value.trim(),
     dob: document.getElementById('f-dob').value,
     gender: document.getElementById('f-gender').value,
@@ -835,7 +793,7 @@ function resetForm() {
   document.getElementById('submit-btn').disabled = false;
   document.getElementById('submit-btn').textContent = 'Submit Intake Form';
   document.getElementById('f-cycle-wrap').style.display = 'none';
-  ['card-vip','card-duo','card-muscle'].forEach(function(id) { document.getElementById(id).classList.remove('show'); });
+  ['card-vip','card-duo'].forEach(function(id) { document.getElementById(id).classList.remove('show'); });
   stressVal = null;
   initAll();
   document.getElementById('view-success').style.display = 'none';
